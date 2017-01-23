@@ -11,7 +11,8 @@ export class PageAccueil
 
     async ajouterUnArticle() : Promise<Redirection<PageModifierArticle>>
     {
-        var id = await AppelerWebService(Api.AjouterArticle, null);
+        var article = new Api.Article();
+        var id = await AppelerWebService(Api.AjouterArticle, article);
         var redirection = RedirigerVers2(PageModifierArticle, id);
         return redirection;
     }

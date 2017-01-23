@@ -13,6 +13,7 @@
     "express-handlebars": "^3.0.0",
     "express-session": "^1.14.2",
     "hbs": "^4.0.1",
+    "lokijs": "^1.4.2",
     "mongodb": "^2.2.11",
     "morgan": "~1.7.0",
     "passport": "^0.3.2",

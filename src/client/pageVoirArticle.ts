@@ -6,6 +6,6 @@ export class PageVoirArticle implements IRoutable<Api.Id>
     article: Api.Article;
     async construire(id:Api.Id)
     {
-        this.article = await AppelerWebService(Api.ObtenirArticle, null);
+        this.article = await AppelerWebService(Api.ObtenirArticle, id);
     }
 }

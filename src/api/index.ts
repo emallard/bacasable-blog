@@ -40,7 +40,7 @@ export class DerniersArticles extends WebService<DerniersArticlesIn, DerniersArt
 {
 }
 
-export class AjouterArticle extends WebService<void, Id>
+export class AjouterArticle extends WebService<Article, Id>
 {
 }
 

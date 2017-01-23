@@ -1,13 +1,12 @@
 
-import * as Def from '../api'
+import * as Api from '../api'
+import {LokiPersistance} from '../bacasable/persistanceLoki';
 
-
-export class DerniersArticlesImpl extends Def.DerniersArticles
+export class DerniersArticlesImpl extends Api.DerniersArticles
 {
-    executer(i:Def.DerniersArticlesIn) : Def.DerniersArticlesOut
+    async executer(i:Api.DerniersArticlesIn) : Promise<Api.DerniersArticlesOut>
     {
-        // todo MongoDB
-        var res = new Def.DerniersArticlesOut();
+        var res = new Api.DerniersArticlesOut();
         res.articles = [];
         res.articles.push({id: "123456", auteur:'auteur', contenu:'contenu'})
         return res;
@@ -15,28 +14,31 @@ export class DerniersArticlesImpl extends Def.DerniersArticles
 }
 
 
-export class AjouterArticleImpl extends Def.AjouterArticle
+export class AjouterArticleImpl extends Api.AjouterArticle
 {
-    executer(i:void) : Def.Id
+    async executer(article:Api.Article) : Promise<Api.Id>
     {
-        // todo MongoDB
-        return {id: "123456"};
+        var persistance = new LokiPersistance();
+        var inserted = await persistance.collection(Api.Article).insertOne(article);
+        return {id: inserted};
     }
 }
 
-export class ObtenirArticleImpl extends Def.ObtenirArticle
+export class ObtenirArticleImpl extends Api.ObtenirArticle
 {
-    executer(i:Def.Id) : Def.Article
+    async executer(id:Api.Id) : Promise<Api.Article>
     {
-        // todo MongoDB
-        return {id: "123456", auteur:'auteur', contenu:'contenu'}
+        var persistance = new LokiPersistance();
+        var found = await persistance.collection(Api.Article).findOneById(id.id);
+        return found;
     }
 }
 
-export class EnregistrerArticleImpl extends Def.EnregistrerArticle
+export class EnregistrerArticleImpl extends Api.EnregistrerArticle
 {
-    executer(article:Def.Article) : void
+    async executer(article:Api.Article) : Promise<void>
     {
-        // todo MongoDB
+        var persistance = new LokiPersistance();
+        var inserted = await persistance.collection(Api.Article).updateOne(article);
     }
 }
