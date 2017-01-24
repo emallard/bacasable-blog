@@ -4,7 +4,9 @@
 
 <div id="messages">
 </div>
+<select id="idListeTests">
 
+</select>
 <button id="boutonLancer"> Lancer</button>
 
 <script src="socket.io.min.js"></script>
@@ -19,19 +21,49 @@ window.onload = function()
         document.getElementById('messages').appendChild(li);
     });
 
+
+    (function obtenirTests()
+    {
+        var req = new XMLHttpRequest();
+        req.open('GET', '/api/tests', true);
+        req.onreadystatechange = function (aEvt) {
+            if (req.readyState == 4) {
+                if (req.status == 200) { 
+                    var x = document.getElementById('idListeTests');
+                    JSON.parse(req.response).forEach(o =>
+                    {
+                        var option = document.createElement("option");
+                        option.text = o;
+                        option.value = o;
+                        x.add(option);
+                    });
+                }
+                else {
+                    alert("Erreur pendant /api/tests.\n" + req.status);
+                }
+            }
+        };
+        req.send();
+    })();
+
+
+
     boutonLancer.onclick = function()
     {
         var req = new XMLHttpRequest();
-        req.open('POST', '/lancer', true);
+        req.open('POST', '/api/lancer', true);
+        req.setRequestHeader("Content-Type", "application/json");
         req.onreadystatechange = function (aEvt) {
             if (req.readyState == 4) {
                 if (req.status == 200) { }
                 else {
-                    alert("Erreur pendant le chargement de la page.\n");
+                    alert("Erreur pendant /api/lancer.\n");
                 }
             }
         };
-        req.send({nom : 'TestRecherche'});
+        var x = document.getElementById('idListeTests');
+        var optionSelectionnee = x.options[x.selectedIndex].value;
+        req.send(JSON.stringify({nom:optionSelectionnee}));
     }
 };
 

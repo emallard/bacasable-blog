@@ -8,7 +8,7 @@ export class DerniersArticlesMock extends Api.DerniersArticles
     {
         var res = new Api.DerniersArticlesOut();
         res.articles = [];
-        res.articles.push({id: "123456", auteur:'auteur', contenu:'contenu'})
+        res.articles.push({id: "123456", titre:'titre', auteur:'auteur', contenu:'contenu'})
         return res;
     }
 }
@@ -26,7 +26,7 @@ export class ObtenirArticleMock extends Api.ObtenirArticle
 {
     async executer(i:Api.Id) : Promise<Api.Article>
     {
-        return {id: "123456", auteur:'auteur', contenu:'contenu'};
+        return {id: "123456", titre:'titre', auteur:'auteur', contenu:'contenu'};
     }
 }
 

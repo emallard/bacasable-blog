@@ -1,15 +1,35 @@
 
-import {TestAjouterArticle} from '../test/testAjouterArticle';
-
 import path = require("path");
 import express = require("express");
 import http = require("http");
 import bodyParser = require("body-parser");
 
-
-async function lancerTest()
+var tests:{new():any}[] = []
+export function ajouterTest(type:{new():any}):void
 {
-    var test = new TestAjouterArticle();
+    tests.push(type);
+}
+
+function trouverTest(nom:string):{new():any}
+{
+    for (var i=0; i<tests.length; ++i)
+    {
+        if (tests[i].toString().split(' ')[1] == nom)
+        {
+            return tests[i];
+        }
+    }
+    return null;
+}
+
+function listeDesTests():string[]
+{
+    return tests.map(t => t.toString().split(' ')[1]);
+}
+
+async function lancerTest(type:{new():any})
+{
+    var test = new type();
     var bac = test.bacasable;
     bac.logSuivre = (url:string) => 
     {
@@ -36,29 +56,40 @@ async function lancerTest()
     await test.test();
 }
 
+
+require("../test/testAjouterArticle");
+require("../test/testArticlesRecents");
+
 // Configuration du serveur
 
 let app = express();
 let server = http.createServer(app);
 var io = require('socket.io')(server);
 
-// Post data
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+// parse application/json
+app.use(bodyParser.json())
 
 // Fichiers
-app.use(express.static(path.join(__dirname, "..", "..", "src", "testrunner", "public")));
+
+
 app.get('/', function(req, res){
     var file = path.join(__dirname, "..", "..", "src", "testrunner", "public", "index.html")
     res.sendFile(file);
 });
 
 // Lancer un test
-app.post('/lancer', function(req, res) {
+app.post('/api/lancer', async function(req, res) {
     console.log(req.body);
-    lancerTest();
+    await lancerTest(trouverTest(req.body.nom));
 });
+
+// Liste des tests
+app.get('/api/tests', function(req, res) {
+    res.write(JSON.stringify(listeDesTests()));
+    res.end();
+});
+
+app.use(express.static(path.join(__dirname, "..", "..", "src", "testrunner", "public")));
 
 io.on('connection', function(socket){
     console.log('a user connected');

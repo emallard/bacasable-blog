@@ -3,6 +3,8 @@ import {BacASable, NavigateurBacASable} from '../bacasable';
 import {BlogApplicationClient} from '../client/application';
 import {BlogApplicationServeur} from '../serveur/application'
 
+import {ajouterTest} from '../testrunner/runner';
+export {ajouterTest};
 
 export class TestBase
 {

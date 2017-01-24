@@ -2,11 +2,20 @@ import {NavigateurBacASable, ApplicationClient} from '../bacasable';
 import {TestBase, ajouterTest} from './testBase';
 import * as C from '../client';
 
-export class TestAjouterArticle extends TestBase
+
+export class TestArticlesRecents extends TestBase
 {
-    static onInit = ajouterTest(TestAjouterArticle);
+    static onInit = ajouterTest(TestArticlesRecents);
 
     async test()
+    {
+        for (var i=0; i<20; ++i)
+        {
+            await this.ajouter('titre ' + i);
+        }
+    }
+
+    async ajouter(titre:string) 
     {
         var lien = this.applicationClient.LienVers(C.PageAccueil);
         var pageAccueil = await this.navigateur.suivreLien(lien);
@@ -17,13 +26,7 @@ export class TestAjouterArticle extends TestBase
         
         var idArticle = pageModifier.article.id;
         pageModifier.article.contenu = "Nouveau contenu";
+        pageModifier.article.titre = titre;
         await pageModifier.enregistrer();
-        
-        var lien2 = this.applicationClient.LienVers2(C.PageVoirArticle, {id: idArticle});
-        var pageVoir = await this.navigateur.suivreLien(lien2);
-        
-        console.log(pageVoir.article);
     }
 }
-
-

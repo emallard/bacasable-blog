@@ -8,7 +8,7 @@ export class DerniersArticlesImpl extends Api.DerniersArticles
     {
         var res = new Api.DerniersArticlesOut();
         res.articles = [];
-        res.articles.push({id: "123456", auteur:'auteur', contenu:'contenu'})
+        res.articles.push({id: "123456", titre:'titre', auteur:'auteur', contenu:'contenu'})
         return res;
     }
 }

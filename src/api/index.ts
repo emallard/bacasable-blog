@@ -19,6 +19,7 @@ export class Article
     id:string;
     auteur:string;
     contenu:string;
+    titre:string;
 }
 
 export class DerniersArticlesIn
