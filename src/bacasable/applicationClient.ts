@@ -3,21 +3,17 @@ import * as B from '../bacasable';
 
 export class ApplicationClient
 {
-    routeurClient:B.Routeur;
-    routeurServeur:B.Routeur;
-    navigateur:B.INavigateur;
+    routeurClient = B.inject(B.RouteurClient);
+    routeurServeur = B.inject(B.RouteurServeur);
+    navigateur = B.inject(B.INavigateur);
+    
     page:any;
     
-    init(routeurClient:B.Routeur, routeurServeur:B.Routeur)
+    async onload()
     {
-        this.routeurClient = routeurClient;
-        this.routeurServeur = routeurServeur;
-    }
-
-    async onload(navigateur:B.INavigateur)
-    {
-        this.navigateur = navigateur;
-        var location = navigateur.location();
+        console.log('ApplicationClient.onload');
+        var location = this.navigateur.location();
+        console.log('location ' + location);
         if (location != undefined)
             this.page = await this.routeurClient.instancier(location);
     }

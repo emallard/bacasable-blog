@@ -1,23 +1,22 @@
-import {NavigateurReel, ApplicationClient, Kernel} from '../bacasable'
+import { Injection } from './injection';
+import {INavigateur, NavigateurReel, ApplicationClient, RouteurClient, RouteurServeur} from '../bacasable'
 
 export class Lanceur 
 {
-    private classe:{new() : ApplicationClient}
-    applicationClient : ApplicationClient;
-    navigateur: NavigateurReel;
-    constructor(classe:{new() : ApplicationClient})
+
+    injection: Injection;
+    
+    constructor(moduleInjection:any)
     {
-        this.classe = classe;
+        this.injection = new Injection();
+        this.injection.bind(INavigateur).to(NavigateurReel).inSingletonScope();
+
+        moduleInjection.configurer(this.injection);
     }
 
     lancer()
     {
-        this.navigateur = new NavigateurReel();
-        this.applicationClient = new this.classe();
-
-        Kernel.navigateur = this.navigateur;
-        Kernel.applicationClient = this.applicationClient;
-
-        this.applicationClient.onload(this.navigateur);
+        var applicationClient = this.injection.get(ApplicationClient);
+        applicationClient.onload();
     }
 }

@@ -1,10 +1,9 @@
-import {Routeur, ApplicationClient, Lanceur} from '../bacasable';
+import {RouteurClient, RouteurServeur, Lanceur, Injection} from '../bacasable';
 import * as C from '../client';
 import * as Api from '../api';
 
 
-
-export class BlogRouteurClient extends Routeur
+export class BlogRouteurClient extends RouteurClient
 {
     constructor()
     {
@@ -17,13 +16,16 @@ export class BlogRouteurClient extends Routeur
     }
 }
 
-export class BlogApplicationClient extends ApplicationClient
+export class BlogInjectionClient
 {
-    constructor()
+    configurer(injection:Injection)
     {
-        super();
-        this.init(new BlogRouteurClient(), new Api.BlogRouteurServeur());
+        injection.bind(C.PageAccueil).toSelf().inSingletonScope();
+        injection.bind(C.PageModifierArticle).toSelf().inSingletonScope();
+        injection.bind(C.PageVoirArticle).toSelf().inSingletonScope();
+        injection.bind(RouteurClient).to(BlogRouteurClient).inSingletonScope();
+        injection.bind(RouteurServeur).to(Api.BlogRouteurServeur).inSingletonScope();
     }
 }
 
-export var lanceur = new Lanceur(BlogApplicationClient);
+//export var lanceur = new Lanceur(new BlogInjectionClient());

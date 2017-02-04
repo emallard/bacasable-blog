@@ -1,7 +1,10 @@
 
-export interface IPersistance
+export class IPersistance
 {
-    collection<T>(type:{new():T}) : ICollection<T>;
+    collection<T>(type:{new():T}) : ICollection<T>
+    {
+        throw "Non implémenté";
+    }
 }
 
 export interface ICollection<T>

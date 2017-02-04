@@ -4,7 +4,7 @@ function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export class NavigateurReel implements INavigateur
+export class NavigateurReel extends INavigateur
 {
     location():string
     {

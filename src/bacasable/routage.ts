@@ -1,5 +1,6 @@
 
 import * as pathToRegexp from "path-to-regexp";
+import {inject, Injection} from './'
 
 export interface IRoutable<U>
 {
@@ -21,10 +22,10 @@ export class Redirection<T>
 }
 
 
-export class Routeur
+class Routeur
 {
     //ajouterRouteParamétrée<T extends IRoutable<U>, U>(route:string, c: new ()=>T, mapping:any)
-    
+    injection = inject(Injection);
     routes:RouteParamétrée[] = [];
 
     ajouterRouteParamétrée<T extends IRoutable<U>, U>(route:string, c: new ()=>T)
@@ -101,15 +102,12 @@ export class Routeur
 
     async instancier(_url:string):Promise<any>
     {
-        //var found = this.routes.find(r => r.url == _url);
-
         var found = this.identifierRoute(_url);
         
-        //if (found == null)
-        //    throw "Exception Route non trouvée : " + _url;
-
-        var page = new found[0].pageType();
-        
+        if (found == null)
+            throw "Exception Route non trouvée : " + _url;
+        //var page = new found[0].pageType();
+        var page = this.injection.instantiate(found[0].pageType, this)
         var params = found[1];
         if (params!= null && page.construire != undefined)
             await page.construire(params);
@@ -173,4 +171,14 @@ export class RouteParamétrée {
         public query:any)
     {
     }
+}
+
+export class RouteurClient extends Routeur
+{
+
+}
+
+export class RouteurServeur extends Routeur
+{
+
 }

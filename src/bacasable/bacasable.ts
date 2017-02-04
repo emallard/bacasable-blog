@@ -3,37 +3,16 @@ import * as B from '../bacasable';
 
 export class BacASable
 {
-    applicationServeur:B.ApplicationServeur;
-    applicationClient:B.ApplicationClient;
-    navigateur:B.NavigateurBacASable;
-    internet:B.InternetBacASable;
-
-    async creer(
-        applicationClient:B.ApplicationClient,
-        applicationServeur:B.ApplicationServeur)
+    internet = B.inject(B.InternetBacASable);
+    navigateur = B.inject(B.NavigateurBacASable);
+    serveur = B.inject(B.ServeurBacASable);
+    applicationServeur = B.inject(B.ApplicationServeur);
+    applicationClient = B.inject(B.ApplicationClient);
+    
+    async initialiser()
     {
-        this.applicationClient = applicationClient;
-        this.applicationServeur = applicationServeur;
-        
-        this.internet = new B.InternetBacASable();
-        this.internet.setBacASable(this);
-        
-        this.navigateur = new B.NavigateurBacASable();
-        this.navigateur.setBacASable(this);
-        this.navigateur.setInternet(this.internet);
-
-        var serveur = new B.ServeurBacASable();
-        serveur.setBacASable(this);
-        serveur.setInternet(this.internet);
-        serveur.charger(this.applicationServeur);
-        this.internet.setServeur(serveur);
-
-        B.Kernel.navigateur = this.navigateur;
-        B.Kernel.applicationClient = this.applicationClient;
-
         await this.navigateur.charger(this.applicationClient);
         
-       
 /*
         // code à rajouter dans le navigateur
         var appClient = new ApplicationClient(

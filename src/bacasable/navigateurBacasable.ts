@@ -1,28 +1,18 @@
-import {INavigateur, BacASable, InternetBacASable, ApplicationClient, Lien, Redirection, WebService} from '../bacasable'
+import {INavigateur, BacASable, InternetBacASable, ApplicationClient, Lien, Redirection, WebService, inject} from '../bacasable'
 
-export class NavigateurBacASable implements INavigateur
+export class NavigateurBacASable extends INavigateur
 {
-    bacasable:BacASable;
-    internet:InternetBacASable;
+    bacasable = inject(BacASable);
+    internet = inject(InternetBacASable);
     applicationClient:ApplicationClient;
 
     _location:string;
     page:any;
 
-    setBacASable(bacasable:BacASable)
-    {
-        this.bacasable = bacasable;
-    }
-
-    setInternet(internet:InternetBacASable)
-    {
-        this.internet = internet;
-    }
-
     async charger(applicationClient:ApplicationClient)
     {
         this.applicationClient = applicationClient;
-        await this.applicationClient.onload(this);
+        await this.applicationClient.onload();
     }
 
     changerPage(page:any):any
@@ -36,7 +26,7 @@ export class NavigateurBacASable implements INavigateur
     {
         this.bacasable.logSuivre(lien.url);
         this._location = lien.url;
-        await this.applicationClient.onload(this);
+        await this.applicationClient.onload();
         return this.changerPage(this.applicationClient.page);
     }
 
@@ -44,7 +34,7 @@ export class NavigateurBacASable implements INavigateur
     {
         this.bacasable.logSuivre(redirection.url);
         this._location = redirection.url;
-        await this.applicationClient.onload(this);
+        await this.applicationClient.onload();
         //var page = new redirection.type();
         return this.changerPage(this.applicationClient.page);
     }

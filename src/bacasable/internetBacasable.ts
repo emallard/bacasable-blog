@@ -1,18 +1,9 @@
-import {BacASable, ServeurBacASable} from '../bacasable';
+import {BacASable, ServeurBacASable, inject} from '../bacasable';
 
 export class InternetBacASable
 {
-    serveur:ServeurBacASable;
-    bacasable:BacASable;
-
-    setBacASable(bacasable:BacASable)
-    {
-        this.bacasable = bacasable;
-    }
-    setServeur(serveur:ServeurBacASable)
-    {
-        this.serveur = serveur;
-    }
+    serveur = inject(ServeurBacASable);
+    bacasable = inject(BacASable);
 
     envoyer(url:string, parameters:any, succes:(reponse:any)=>void) : any
     {

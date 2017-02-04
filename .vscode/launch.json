@@ -14,6 +14,15 @@
             "sourceMaps": true
         },
         {
+            "name": "Launch Test Injection",
+            "type": "node2",
+            "request": "launch",
+            "program": "${workspaceRoot}/src/testrunner/test_injection.ts",
+            "cwd": "${workspaceRoot}",
+            "outFiles": ["${workspaceRoot}/build/**/*.js"],
+            "sourceMaps": true
+        },
+        {
             "name": "Launch Node",
             "type": "node2",
             "request": "launch",

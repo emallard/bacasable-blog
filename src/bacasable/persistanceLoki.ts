@@ -4,7 +4,7 @@ import * as loki from 'lokijs';
 
 var db = new loki('loki.json');
 
-export class LokiPersistance implements IPersistance
+export class LokiPersistance extends IPersistance
 {
     collection<T>(type:{new():T}) : ICollection<T>
     {

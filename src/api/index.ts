@@ -1,7 +1,7 @@
 
-import {Routeur, WebService} from '../bacasable';
+import {RouteurServeur, WebService} from '../bacasable';
 
-export class BlogRouteurServeur extends Routeur
+export class BlogRouteurServeur extends RouteurServeur
 {
     constructor()
     {

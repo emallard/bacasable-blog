@@ -1,8 +1,10 @@
 import * as Api from '../api'
-import {IRoutable, AppelerWebService} from '../bacasable';
+import {inject, ApplicationClient, Redirection, IRoutable} from '../bacasable';
 
 export class PageModifierArticle implements IRoutable<Api.Id>
 {
+    app = inject(ApplicationClient);
+
     //id:Api.Id;
     /*
     titre:string;
@@ -13,11 +15,11 @@ export class PageModifierArticle implements IRoutable<Api.Id>
     article: Api.Article;
     async construire(id:Api.Id)
     {
-        this.article = await AppelerWebService(Api.ObtenirArticle, id);
+        this.article = await this.app.AppelerWebService(Api.ObtenirArticle, id);
     }
 
     async enregistrer()
     {
-        await AppelerWebService(Api.EnregistrerArticle, this.article);
+        await this.app.AppelerWebService(Api.EnregistrerArticle, this.article);
     }
 }

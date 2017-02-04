@@ -42,3 +42,7 @@ export class EnregistrerArticleImpl extends Api.EnregistrerArticle
         var inserted = await persistance.collection(Api.Article).updateOne(article);
     }
 }
+
+export class AuthentificationImpl {
+    
+}

@@ -27,9 +27,20 @@ function listeDesTests():string[]
     return tests.map(t => t.toString().split(' ')[1]);
 }
 
+
+async function lancerTest1(type:{new():any})
+{
+    console.log('lancerTest');
+    var test = new type();
+    await test.initialiser();
+    console.log('fin initialiser');
+}
+
 async function lancerTest(type:{new():any})
 {
     var test = new type();
+    await test.initialiser();
+
     var bac = test.bacasable;
     bac.logSuivre = (url:string) => 
     {
@@ -53,6 +64,7 @@ async function lancerTest(type:{new():any})
         console.log('reponse : ' + JSON.stringify(reponse));
         io.emit('chat message', 'réponse : ' + JSON.stringify(reponse));
     }
+    
     await test.test();
 }
 
