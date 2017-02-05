@@ -12,8 +12,6 @@ import { InjectionServeur } from '../bacasable/injectionServeur';
 import { InjectionClient } from '../bacasable/injectionClient';
 import {ajouterTest} from '../testrunner/runner';
 
-import {DynamicLoader} from '../serveur/dynamicLoader';
-
 export class TestBase
 {
     applicationServeur:ApplicationServeur;
