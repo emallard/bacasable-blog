@@ -1,70 +1,48 @@
 <html>
-
 <body>
 
-<div id="messages">
-</div>
-<select id="idListeTests">
+<div id="messages"></div>
 
-</select>
+<select id="idListeTests"></select>
+
 <button id="boutonLancer"> Lancer</button>
 
+<div id="svgContainer"></div>
+
 <script src="socket.io.min.js"></script>
+<script src="utils.js"></script>
+<script src="graph.js"></script>
+
+
 <script>
 
 window.onload = function()
 {
-    var socket = io();
-    socket.on('chat message', function(msg){
-        var li = document.createElement('li');
-        li.innerText = msg;
-        document.getElementById('messages').appendChild(li);
+    get('/api/tests', function(req) {
+        JSON.parse(req.response).forEach(o =>
+        {
+            addOption('idListeTests', o, o);
+        });
     });
-
-
-    (function obtenirTests()
-    {
-        var req = new XMLHttpRequest();
-        req.open('GET', '/api/tests', true);
-        req.onreadystatechange = function (aEvt) {
-            if (req.readyState == 4) {
-                if (req.status == 200) { 
-                    var x = document.getElementById('idListeTests');
-                    JSON.parse(req.response).forEach(o =>
-                    {
-                        var option = document.createElement("option");
-                        option.text = o;
-                        option.value = o;
-                        x.add(option);
-                    });
-                }
-                else {
-                    alert("Erreur pendant /api/tests.\n" + req.status);
-                }
-            }
-        };
-        req.send();
-    })();
-
-
 
     boutonLancer.onclick = function()
     {
-        var req = new XMLHttpRequest();
-        req.open('POST', '/api/lancer', true);
-        req.setRequestHeader("Content-Type", "application/json");
-        req.onreadystatechange = function (aEvt) {
-            if (req.readyState == 4) {
-                if (req.status == 200) { }
-                else {
-                    alert("Erreur pendant /api/lancer.\n");
-                }
-            }
-        };
-        var x = document.getElementById('idListeTests');
-        var optionSelectionnee = x.options[x.selectedIndex].value;
-        req.send(JSON.stringify({nom:optionSelectionnee}));
+        graphClearMessages();
+        post('/api/lancer', {nom:selectedOptionValue('idListeTests')}, null);
     }
+
+    get('/schema.svg', function(req) { 
+        var mySVG = req.responseXML.getElementsByTagName("svg")[0];
+        document.getElementById('svgContainer').appendChild(mySVG);
+    });
+
+    var socket = io();
+    socket.on('message', function(msg){
+        //var li = document.createElement('li');
+        //li.innerText = msg;
+        //document.getElementById('messages').appendChild(li);
+        graphPushMessage(msg);
+    });
 };
 
 

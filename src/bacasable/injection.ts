@@ -22,14 +22,15 @@ class RuntimeScope
 
 class Binding
 {
-    scoping:Scoping;
+    scoping = new Scoping();
+    boundToConstant:any = null;
+    
     typeInstance:{new ():any};
+    typeInterface:{new ():any}
 
-    constructor(
-        public typeInterface:{new ():any}, 
-        private injection:Injection)
+    constructor(typeInterface:{new ():any})
     {
-        this.scoping = new Scoping(injection);
+        this.typeInterface = typeInterface;
     }
 
     to(typeInstance:{new ():any}) : Scoping
@@ -45,17 +46,19 @@ class Binding
 
     toConstant(obj:any)
     {
-        this.to(this.typeInterface).in(this.injection.singletonScope);
-        this.injection['__injectScopes'][0].instances.push(new PairTypeInstance(this.typeInstance, obj));
+        this.boundToConstant = obj;
+        this.to(this.typeInterface).inSingletonScope();
+        //this.injection['__injectScopes'][0].instances.push(new PairTypeInstance(this.typeInstance, obj));
     }
 }
 
 class Scoping
 {
-    public bindingScope:BindingScope;
-    constructor(
-        private injection:Injection)
+    public bindingScope:BindingScope = null;
+
+    constructor()
     {}
+    
     in(scope:BindingScope)
     {
         this.bindingScope = scope;
@@ -63,12 +66,12 @@ class Scoping
 
     inTypeScope(type:{new():any})
     {
-        this.bindingScope = this.injection.getScope(type);
+        this.bindingScope = new BindingScope(type);
     }
 
     inSingletonScope()
     {
-        this.bindingScope = this.injection.singletonScope;
+        this.bindingScope = new BindingScope(Injection);
     }
 }
 
@@ -82,7 +85,6 @@ export class Injection
 {
     doLog = true;
 
-    
     listeEnSingleton:PairTypeInstance[] = [];
     bindings:Binding[] = [];
 
@@ -91,7 +93,6 @@ export class Injection
     
     singletonScope : BindingScope;
 
-
     constructor()
     {
         this.singletonScope = new BindingScope(Injection);
@@ -99,7 +100,6 @@ export class Injection
         this['__injectScopes'] = [new RuntimeScope(Injection)];
         this.bind(Injection).toConstant(this);
     }
-
 
     addScope(bindingScope:BindingScope):BindingScope
     {
@@ -120,12 +120,17 @@ export class Injection
 
     bind(typeInterface:{new ():any}) : Binding
     {
-        var binding = new Binding(typeInterface, this);
+        var binding = new Binding(typeInterface);
         this.bindings.push(binding);
         return binding;
     }
+
+    addBinding(binding:Binding)
+    {
+        this.bindings.push(binding);
+    }
     
-    get(typeInterface:{new():any}):any
+    get<T>(typeInterface:{new():T}):T
     {
         return this.inject(typeInterface, this['__injectScopes'], 0)
     }
@@ -142,6 +147,11 @@ export class Injection
         var binding = this.bindings.find(e => e.typeInterface == typeInterface);
         if (binding == null)
             throw "Binding not found for type " + this.typeToString(typeInterface);
+        
+        
+        // check binding to constant
+        if (binding.boundToConstant != null)
+            return binding.boundToConstant;
         
         // create new instance
         var newInstance = new binding.typeInstance();
@@ -172,9 +182,13 @@ export class Injection
         if (binding == null)
             throw "Binding not found for type " + this.typeToString(typeInterface);
 
+        // check binding to constant
+        if (binding.boundToConstant != null)
+            return binding.boundToConstant;
+
         var runtimeScope = runtimeScopes.find(s => s.typeScope == binding.scoping.bindingScope.typeScope);
 
-        // fin in scope, with its real type
+        // find in scope, with its real type
         var instanceFoundInScope = runtimeScope.instances.find(i => i.type == binding.typeInstance);
         if (instanceFoundInScope != null)
         {
@@ -186,6 +200,8 @@ export class Injection
             
 
         this.log('injecting ' + this.typeToString(typeInterface) + ' : new instance registered in scope ' + this.typeToString(runtimeScope.typeScope), recursionLevel);
+        
+        // create new instance
         var newInstance = new binding.typeInstance();
 
         // register instance in scope, with its real type
@@ -289,4 +305,18 @@ export function injectFunc<T>(type:{new():T}) : ()=>T
     var fake:any = {};
     fake.__injectFunc = type;
     return fake;
+}
+
+
+export class StaticBindings
+{
+    static bindings:Binding[] = [];
+}
+
+export function bind<T>(typeInterface:{new():T}) : Binding
+{
+    console.log('[static] binding ' + typeInterface.toString().split(' ')[1]);
+    var binding = new Binding(typeInterface);
+    StaticBindings.bindings.push(binding);
+    return binding;
 }

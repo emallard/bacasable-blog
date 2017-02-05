@@ -1,7 +1,6 @@
-import {NavigateurBacASable, ApplicationClient} from '../bacasable';
-import {TestBase, ajouterTest} from './testBase';
-import * as C from '../client';
-
+import { ajouterTest } from '../testrunner/runner';
+import { PageAccueil } from '../client/pageAccueil';
+import {TestBase} from './testBase';
 
 export class TestArticlesRecents extends TestBase
 {
@@ -17,7 +16,7 @@ export class TestArticlesRecents extends TestBase
 
     async ajouter(titre:string) 
     {
-        var lien = this.applicationClient.LienVers(C.PageAccueil);
+        var lien = this.applicationClient.LienVers(PageAccueil);
         var pageAccueil = await this.navigateur.suivreLien(lien);
         
         var pageModifier = await this.navigateur.suivre(

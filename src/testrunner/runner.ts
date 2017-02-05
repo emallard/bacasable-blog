@@ -45,32 +45,63 @@ async function lancerTest(type:{new():any})
     bac.logSuivre = (url:string) => 
     {
         console.log('navigateur vers : ' + url);
-        io.emit('chat message', 'navigateur vers : ' + url);
+        io.emit('message', JSON.stringify({type:'suivre', url:url}));
     };
+
+    bac.logSuivi = (anciennePage:string, url:string, nouvellePage:any) => 
+    {
+        console.log('navigateur a suivi : ' + url);
+        var ancienne:any = anciennePage == undefined ? undefined : anciennePage.constructor.name;
+        io.emit('message', JSON.stringify({type:'suivi', url:url, anciennePage:ancienne, nouvellePage:nouvellePage.constructor.name}));
+    };
+
     bac.logPage = (page:any) => 
     {
         console.log('navigateur a changé de page : ' + page.constructor.name);
-        io.emit('chat message', 'navigateur a changé de page : ' + page.constructor.name);
+        io.emit('message', JSON.stringify({type:'page', page:page.constructor.name}));
     }
 
     bac.logAppel = (url, parameters) => 
     {
         console.log('appel vers : ' + url + ' , post : ' + JSON.stringify(parameters));
-        io.emit('chat message', 'appel vers : ' + url + ' , post : ' + JSON.stringify(parameters));
+        io.emit('message',  JSON.stringify({type:'api-appel', url:url , parameters:parameters}));
     }
 
     bac.logReponse = (reponse, url, parameters) => 
     {
         console.log('reponse : ' + JSON.stringify(reponse));
-        io.emit('chat message', 'réponse : ' + JSON.stringify(reponse));
+        io.emit('message', JSON.stringify({type:'api-reponse', url:url , parameters:parameters, reponse:reponse}));
     }
     
     await test.test();
 }
 
 
-require("../test/testAjouterArticle");
-require("../test/testArticlesRecents");
+import * as fs from 'fs';
+function dynLoad(dir)
+{
+    //console.log(dir);
+    var list = fs.readdirSync(dir);
+    list.forEach(file => 
+    {
+        var stat = fs.statSync(dir + '/' + file);
+        if (stat && stat.isDirectory()) {
+            dynLoad(dir + '/' + file)
+        }
+        else
+        {
+            if (file.endsWith('.js'))
+            {
+                //console.log(dir + '/' + file);
+                //DynamicLoader.files.push(dir + '/' + file);
+                require(dir + '/' + file);
+            }
+        }
+    });
+}
+dynLoad(__dirname + '/../test');
+dynLoad(__dirname + '/../serveur');
+
 
 // Configuration du serveur
 

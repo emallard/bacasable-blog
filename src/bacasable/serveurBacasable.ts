@@ -1,8 +1,9 @@
-import * as B from '../bacasable';
+import { ApplicationServeur } from './applicationServeur';
+import { inject } from './injection';
 
 export class ServeurBacASable
 {
-    applicationServeur = B.inject(B.ApplicationServeur);
+    applicationServeur = inject(ApplicationServeur);
 
     recevoir(url:string, parameters:any):any
     {

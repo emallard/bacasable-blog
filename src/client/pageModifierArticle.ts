@@ -1,8 +1,13 @@
-import * as Api from '../api'
-import {inject, ApplicationClient, Redirection, IRoutable} from '../bacasable';
+import { ajouterRoute, IRoutable } from '../bacasable/routage';
+import { inject } from '../bacasable/injection';
+import { ApplicationClient } from '../bacasable/applicationClient';
+import { Article, EnregistrerArticle, Id, ObtenirArticle } from '../api/articles';
 
-export class PageModifierArticle implements IRoutable<Api.Id>
+
+export class PageModifierArticle implements IRoutable<Id>
 {
+    static route = ajouterRoute('/modifier/:id', PageModifierArticle);
+        
     app = inject(ApplicationClient);
 
     //id:Api.Id;
@@ -12,14 +17,14 @@ export class PageModifierArticle implements IRoutable<Api.Id>
     contenu:string;
     */
 
-    article: Api.Article;
-    async construire(id:Api.Id)
+    article: Article;
+    async construire(id:Id)
     {
-        this.article = await this.app.AppelerWebService(Api.ObtenirArticle, id);
+        this.article = await this.app.AppelerWebService(ObtenirArticle, id);
     }
 
     async enregistrer()
     {
-        await this.app.AppelerWebService(Api.EnregistrerArticle, this.article);
+        await this.app.AppelerWebService(EnregistrerArticle, this.article);
     }
 }

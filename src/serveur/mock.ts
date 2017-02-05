@@ -1,12 +1,20 @@
+import {
+    AjouterArticle,
+    Article,
+    DerniersArticles,
+    DerniersArticlesIn,
+    DerniersArticlesOut,
+    EnregistrerArticle,
+    Id,
+    ObtenirArticle
+} from '../api/articles';
 
-import * as Api from '../api'
 
-
-export class DerniersArticlesMock extends Api.DerniersArticles
+export class DerniersArticlesMock extends DerniersArticles
 {
-    async executer(i:Api.DerniersArticlesIn) : Promise<Api.DerniersArticlesOut>
+    async executer(i:DerniersArticlesIn) : Promise<DerniersArticlesOut>
     {
-        var res = new Api.DerniersArticlesOut();
+        var res = new DerniersArticlesOut();
         res.articles = [];
         res.articles.push({id: "123456", titre:'titre', auteur:'auteur', contenu:'contenu'})
         return res;
@@ -14,25 +22,25 @@ export class DerniersArticlesMock extends Api.DerniersArticles
 }
 
 
-export class AjouterArticleMock extends Api.AjouterArticle
+export class AjouterArticleMock extends AjouterArticle
 {
-    async executer(article:Api.Article) : Promise<Api.Id>
+    async executer(article:Article) : Promise<Id>
     {
         return {id: "123456"};
     }
 }
 
-export class ObtenirArticleMock extends Api.ObtenirArticle
+export class ObtenirArticleMock extends ObtenirArticle
 {
-    async executer(i:Api.Id) : Promise<Api.Article>
+    async executer(i:Id) : Promise<Article>
     {
         return {id: "123456", titre:'titre', auteur:'auteur', contenu:'contenu'};
     }
 }
 
-export class EnregistrerArticleMock extends Api.EnregistrerArticle
+export class EnregistrerArticleMock extends EnregistrerArticle
 {
-    async executer(article:Api.Article) : Promise<void>
+    async executer(article:Article) : Promise<void>
     {
     }
 }

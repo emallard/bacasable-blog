@@ -1,4 +1,6 @@
-import {BacASable, ServeurBacASable, inject} from '../bacasable';
+import { BacASable } from './bacasable';
+import { inject } from './injection';
+import { ServeurBacASable } from './serveurBacasable';
 
 export class InternetBacASable
 {

@@ -1,4 +1,4 @@
-import {INavigateur} from '../bacasable';
+import { INavigateur } from './navigateur';
 
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));

@@ -1,34 +1,25 @@
-import * as B from '../bacasable';
-
+import { inject } from './injection';
+import { InternetBacASable } from './internetBacasable';
+import { NavigateurBacASable } from './navigateurBacasable';
+import { ServeurBacASable } from './serveurBacasable';
+import { ApplicationServeur } from './applicationServeur';
+import { ApplicationClient } from './applicationClient';
 
 export class BacASable
 {
-    internet = B.inject(B.InternetBacASable);
-    navigateur = B.inject(B.NavigateurBacASable);
-    serveur = B.inject(B.ServeurBacASable);
-    applicationServeur = B.inject(B.ApplicationServeur);
-    applicationClient = B.inject(B.ApplicationClient);
+    internet = inject(InternetBacASable);
+    navigateur = inject(NavigateurBacASable);
+    serveur = inject(ServeurBacASable);
+    applicationServeur = inject(ApplicationServeur);
+    applicationClient = inject(ApplicationClient);
     
     async initialiser()
     {
         await this.navigateur.charger(this.applicationClient);
-        
-/*
-        // code à rajouter dans le navigateur
-        var appClient = new ApplicationClient(
-                new MonRouteurClient(),
-                new MonRouteurServeur());
-        appClient.onload(navigateur); 
-
-        // code à rajouter dans Node
-        var appServeur = new ApplicationServeur(
-            new MonRouteurServeur()
-        );
-        appClient.setServeur(serveur);  
-*/
     }
 
     logSuivre : (url:string)=>void = (url)=>{};
+    logSuivi : (url:string, anciennePage:any, nouvellePage:any)=>void = (anciennePage, nouvellePage)=>{};
     logPage : (page:any)=>void = (page)=>{};
     logAppel : (url:any, parameters:any)=>void = (url:any, parameters:any)=>{};
     logReponse : (reponse:any, url:any, parameters:any)=>void = (reponse:any, url:any, parameters:any)=>{};

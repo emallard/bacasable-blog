@@ -1,6 +1,5 @@
-
-import * as pathToRegexp from "path-to-regexp";
-import {inject, Injection} from './'
+import { inject, Injection } from './injection';
+import * as pathToRegexp from 'path-to-regexp';
 
 export interface IRoutable<U>
 {
@@ -21,7 +20,15 @@ export class Redirection<T>
     type:new()=>T;
 }
 
+/*
+export class ALienVers<T>
+{
+    constructor(type: {new(): T})
+    {
 
+    }
+}
+*/
 class Routeur
 {
     //ajouterRouteParamétrée<T extends IRoutable<U>, U>(route:string, c: new ()=>T, mapping:any)
@@ -36,6 +43,11 @@ class Routeur
     ajouterRoute(route:string, c: {new ():any})
     {
         this.routes.push(new RouteParamétrée(route, c, null));
+    }
+
+    ajouter(r:RouteParamétrée)
+    {
+        this.routes.push(r);
     }
 
     obtenirLien<T>(c: {new(): T}) : Lien<T>
@@ -175,10 +187,44 @@ export class RouteParamétrée {
 
 export class RouteurClient extends Routeur
 {
-
+    constructor()
+    {
+        super();
+        StaticRoutes.routes.forEach(
+            r => this.ajouter(r)
+        )
+    }
 }
 
 export class RouteurServeur extends Routeur
 {
-
+    constructor()
+    {
+        super();
+        StaticRoutesApi.routes.forEach(
+            r => this.ajouter(r)
+        )
+    }
 }
+
+export class StaticRoutes
+{
+    static routes:RouteParamétrée[] = [];
+}
+
+export function ajouterRoute(route:string, pageType:{new ():any})
+{
+    console.log('[static] ajouterRoute ' + route);
+    StaticRoutes.routes.push(new RouteParamétrée(route, pageType, null));
+}
+
+export class StaticRoutesApi
+{
+    static routes:RouteParamétrée[] = [];
+}
+
+export function ajouterRouteApi(route:string, pageType:{new ():any})
+{
+    console.log('[static] ajouterRouteApi ' + route);
+    StaticRoutesApi.routes.push(new RouteParamétrée(route, pageType, null));
+} 

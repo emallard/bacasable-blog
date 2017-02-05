@@ -1,4 +1,5 @@
-import {RouteurServeur, inject, injectNew, injectFunc, Injection} from '../bacasable';
+import { inject, Injection } from './injection';
+import { RouteurServeur } from './routage';
 
 export class ExecutionRequeteServeur
 {

@@ -1,10 +1,18 @@
-
-import {InternetBacASable, BacASable, NavigateurBacASable, INavigateur, ApplicationClient, ApplicationServeur, ServeurBacASable, ExecutionRequeteServeur, Injection, BindingScope} from '../bacasable';
-import {BlogInjectionClient} from '../client/application';
-import {BlogInjectionServeur} from '../serveur/application'
-
+import { RouteurClient, RouteurServeur } from '../bacasable/routage';
+import { Injection } from '../bacasable/injection';
+import { ExecutionRequeteServeur } from '../bacasable/executionRequeteServeur';
+import { ApplicationClient } from '../bacasable/applicationClient';
+import { NavigateurBacASable } from '../bacasable/navigateurBacasable';
+import { INavigateur } from '../bacasable/navigateur';
+import { ServeurBacASable } from '../bacasable/serveurBacasable';
+import { InternetBacASable } from '../bacasable/internetBacasable';
+import { BacASable } from '../bacasable/bacasable';
+import { ApplicationServeur } from '../bacasable/applicationServeur';
+import { InjectionServeur } from '../bacasable/injectionServeur';
+import { InjectionClient } from '../bacasable/injectionClient';
 import {ajouterTest} from '../testrunner/runner';
-export {ajouterTest};
+
+import {DynamicLoader} from '../serveur/dynamicLoader';
 
 export class TestBase
 {
@@ -29,9 +37,14 @@ export class TestBase
         injection.bind(ServeurBacASable).toSelf().inSingletonScope();
         injection.bind(InternetBacASable).toSelf().inSingletonScope();
         injection.bind(BacASable).toSelf().inSingletonScope();
+        injection.bind(RouteurClient).toSelf().inSingletonScope();
+        injection.bind(RouteurServeur).toSelf().inSingletonScope();
 
-        new BlogInjectionClient().configurer(injection);
-        new BlogInjectionServeur().configurer(injection);
+        // suite configuration injection
+        injection.bind(InjectionClient).toSelf().inSingletonScope();
+        injection.bind(InjectionServeur).toSelf().inSingletonScope();
+        injection.get(InjectionClient).configurer(injection);
+        injection.get(InjectionServeur).configurer(injection);
 
         this.bacasable = injection.get(BacASable);
         await this.bacasable.initialiser();

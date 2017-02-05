@@ -1,5 +1,7 @@
+import { ApplicationClient } from './applicationClient';
+import { NavigateurReel } from './navigateurClient';
+import { INavigateur } from './navigateur';
 import { Injection } from './injection';
-import {INavigateur, NavigateurReel, ApplicationClient, RouteurClient, RouteurServeur} from '../bacasable'
 
 export class Lanceur 
 {
