@@ -1,5 +1,5 @@
-import { ajouterRouteApi } from '../bacasable/routage';
-import { WebService } from '../bacasable/webservice';
+import { ajouterRouteApi } from '../../bacasable/bacasable/routage';
+import { WebService } from '../../bacasable/bacasable/webservice';
 
 export class AuthentificationIn
 {

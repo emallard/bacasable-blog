@@ -1,6 +1,6 @@
-import { inject } from '../bacasable/injection';
-import { ApplicationClient } from '../bacasable/applicationClient';
-import { ajouterRoute, Redirection } from '../bacasable/routage';
+import { inject } from '../../bacasable/bacasable/injection';
+import { ApplicationClient } from '../../bacasable/bacasable/applicationClient';
+import { ajouterRoute, Redirection } from '../../bacasable/bacasable/routage';
 import { Authentification } from '../api/authentification';
 import { PageAccueilAdmin } from './pageAccueilAdmin';
 

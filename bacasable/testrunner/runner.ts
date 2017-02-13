@@ -92,15 +92,15 @@ function dynLoad(dir)
         {
             if (file.endsWith('.js'))
             {
-                //console.log(dir + '/' + file);
+                console.log(dir + '/' + file);
                 //DynamicLoader.files.push(dir + '/' + file);
                 require(dir + '/' + file);
             }
         }
     });
 }
-dynLoad(__dirname + '/../test');
-dynLoad(__dirname + '/../serveur');
+dynLoad(path.join(__dirname, '..', '..', 'src', 'serveur'));
+dynLoad(path.join(__dirname, '..', '..', 'src', 'test'));
 
 
 // Configuration du serveur
@@ -116,9 +116,14 @@ app.use(bodyParser.json())
 
 
 app.get('/', function(req, res){
-    var file = path.join(__dirname, "..", "..", "src", "testrunner", "public", "index.html")
+    var file = path.join(__dirname, "..", "..", "..", "bacasable", "testrunner", "public", "index.html")
     res.sendFile(file);
 });
+/*
+app.get('/schema.svg', function(req, res){
+    var file = path.join(__dirname, "..", "..", "..", "src", "test", "schema.svg")
+    res.sendFile(file);
+});*/
 
 // Lancer un test
 app.post('/api/lancer', async function(req, res) {
@@ -132,7 +137,7 @@ app.get('/api/tests', function(req, res) {
     res.end();
 });
 
-app.use(express.static(path.join(__dirname, "..", "..", "src", "testrunner", "public")));
+app.use(express.static(path.join(__dirname, "..", "..", "..", "bacasable", "testrunner", "public")));
 
 io.on('connection', function(socket){
     console.log('a user connected');

@@ -1,16 +1,16 @@
-import { RouteurClient, RouteurServeur } from '../bacasable/routage';
-import { Injection } from '../bacasable/injection';
-import { ExecutionRequeteServeur } from '../bacasable/executionRequeteServeur';
-import { ApplicationClient } from '../bacasable/applicationClient';
-import { NavigateurBacASable } from '../bacasable/navigateurBacasable';
-import { INavigateur } from '../bacasable/navigateur';
-import { ServeurBacASable } from '../bacasable/serveurBacasable';
-import { InternetBacASable } from '../bacasable/internetBacasable';
-import { BacASable } from '../bacasable/bacasable';
-import { ApplicationServeur } from '../bacasable/applicationServeur';
-import { InjectionServeur } from '../bacasable/injectionServeur';
-import { InjectionClient } from '../bacasable/injectionClient';
-import {ajouterTest} from '../testrunner/runner';
+import { RouteurClient, RouteurServeur } from '../../bacasable/bacasable/routage';
+import { Injection } from '../../bacasable/bacasable/injection';
+import { ExecutionRequeteServeur } from '../../bacasable/bacasable/executionRequeteServeur';
+import { ApplicationClient } from '../../bacasable/bacasable/applicationClient';
+import { NavigateurBacASable } from '../../bacasable/bacasable/navigateurBacasable';
+import { INavigateur } from '../../bacasable/bacasable/navigateur';
+import { ServeurBacASable } from '../../bacasable/bacasable/serveurBacasable';
+import { InternetBacASable } from '../../bacasable/bacasable/internetBacasable';
+import { BacASable } from '../../bacasable/bacasable/bacasable';
+import { ApplicationServeur } from '../../bacasable/bacasable/applicationServeur';
+import { InjectionServeur } from '../../bacasable/bacasable/injectionServeur';
+import { InjectionClient } from '../../bacasable/bacasable/injectionClient';
+import {ajouterTest} from '../../bacasable/testrunner/runner';
 
 export class TestBase
 {

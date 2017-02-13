@@ -1,6 +1,7 @@
-import { ApplicationClient } from '../bacasable/applicationClient';
-import { inject } from '../bacasable/injection';
-import { ajouterRoute, Lien, Redirection } from '../bacasable/routage';
+import { PageContact } from './pageContact';
+import { ApplicationClient } from '../../bacasable/bacasable/applicationClient';
+import { inject, injectNewGeneric } from '../../bacasable/bacasable/injection';
+import { ajouterRoute, Lien, Redirection } from '../../bacasable/bacasable/routage';
 import { PageModifierArticle } from './pageModifierArticle';
 import { PageAuthentification } from './pageAuthentification';
 import { AjouterArticle, Article } from '../api/articles';
@@ -18,11 +19,8 @@ export class PageAccueil
     //rediriger = inject(RedirigerVers);
     //redirection = injectRedirection(Pages.PageModifierArticle);
 
-    lienSeConnecter:Lien<PageAuthentification>;
-    afterInject()
-    {
-        this.lienSeConnecter = this.app.LienVers(PageAuthentification)
-    }
+    lienSeConnecter = injectNewGeneric(new Lien<PageAuthentification>());
+    lienContact = injectNewGeneric(new Lien<PageContact>());
 
     async ajouterUnArticle() : Promise<Redirection<PageModifierArticle>>
     {

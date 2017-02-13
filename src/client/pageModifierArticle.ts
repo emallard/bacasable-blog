@@ -1,6 +1,6 @@
-import { ajouterRoute, IRoutable } from '../bacasable/routage';
-import { inject } from '../bacasable/injection';
-import { ApplicationClient } from '../bacasable/applicationClient';
+import { ajouterRoute, IRoutable } from '../../bacasable/bacasable/routage';
+import { inject } from '../../bacasable/bacasable/injection';
+import { ApplicationClient } from '../../bacasable/bacasable/applicationClient';
 import { Article, EnregistrerArticle, Id, ObtenirArticle } from '../api/articles';
 
 

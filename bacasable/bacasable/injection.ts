@@ -137,10 +137,10 @@ export class Injection
 
     instantiate(typeInterface:{new():any}, scopedObject:any):any
     {
-        return this.createNew2(typeInterface, scopedObject['__injectScopes'], 0)
+        return this.injectNew(typeInterface, scopedObject['__injectScopes'], 0)
     }
 
-    private createNew2(typeInterface:{new():any}, runtimeScopes:RuntimeScope[], recursionLevel:number):any
+    private injectNew(typeInterface:{new():any}, runtimeScopes:RuntimeScope[], recursionLevel:number):any
     {
         this.log('creating new ' + this.typeToString(typeInterface), recursionLevel);
 
@@ -155,24 +155,14 @@ export class Injection
         
         // create new instance
         var newInstance = new binding.typeInstance();
+        
+        return this.injectCommon(newInstance, typeInterface, runtimeScopes, recursionLevel);;
+    }
 
-        // copy scopes
-        newInstance['__injectScopes'] = [];
+    private injectNewGeneric(newInstance:any, runtimeScopes:RuntimeScope[], recursionLevel:number):any
+    {
         this.copyRuntimeScopes(newInstance, runtimeScopes);
-
-        // create new scope if needed
-        var startANewScope = (null != this.configurationScopes.find(is => is.typeScope == typeInterface));
-        if (startANewScope)
-        {
-            this.log('starting a new scope', recursionLevel);
-            var newScope = new RuntimeScope(typeInterface);
-            newScope.instances.push(newInstance);
-            newInstance['__injectScopes'].push(newScope);
-        }
-
-        // properties
         this.injectProperties(newInstance, recursionLevel);
-
         return newInstance;
     }
 
@@ -207,6 +197,11 @@ export class Injection
         // register instance in scope, with its real type
         runtimeScope.instances.push(new PairTypeInstance(binding.typeInstance, newInstance));
 
+        return this.injectCommon(newInstance, typeInterface, runtimeScopes, recursionLevel);
+    }
+
+    private injectCommon(newInstance:any, typeInterface:{new():any}, runtimeScopes:RuntimeScope[], recursionLevel:number):any
+    {
         // copy scopes for nouvelleInstance
         this.copyRuntimeScopes(newInstance, runtimeScopes);
 
@@ -222,7 +217,6 @@ export class Injection
             
         // properties
         this.injectProperties(newInstance, recursionLevel);
-
         return newInstance;
     }
 
@@ -235,7 +229,8 @@ export class Injection
                 var propertyValue:any = o[propertyName];
                 if (propertyValue != undefined)
                 {
-                    if(propertyValue.__inject != undefined)
+                    if (propertyValue != undefined
+                        && propertyValue.__inject != undefined)
                     {
                         this.log('.'+propertyName, recursionLevel);
                         o[propertyName] = this.inject(propertyValue.__inject, o['__injectScopes'], recursionLevel+1);
@@ -252,7 +247,14 @@ export class Injection
                         && propertyValue.__injectNew != undefined)
                     {
                         this.log('.'+propertyName, recursionLevel);
-                        o[propertyName] = this.createNew2(propertyValue.__injectNew, o['__injectScopes'], recursionLevel+1);
+                        o[propertyName] = this.injectNew(propertyValue.__injectNew, o['__injectScopes'], recursionLevel+1);
+                    }
+
+                    if (propertyValue != undefined
+                        && propertyValue.__injectNewGeneric != undefined)
+                    {
+                        this.log('.'+propertyName, recursionLevel);
+                        o[propertyName] = this.injectNewGeneric(propertyValue.__injectNewGeneric, o['__injectScopes'], recursionLevel+1);
                     }
                 }
             }
@@ -261,7 +263,7 @@ export class Injection
 
     private injectFunc(typeFunction:any, scopes:RuntimeScope[],recursionLevel:number)
     {
-        return () => { return this.createNew2(typeFunction, scopes, 0) };
+        return () => { return this.injectNew(typeFunction, scopes, 0) };
     }
 
     private typeToString(typeFunction):string
@@ -297,6 +299,13 @@ export function injectNew<T>(type:{new():T}) : T
 {
     var fake:any = {};
     fake.__injectNew = type;
+    return fake;
+}
+
+export function injectNewGeneric<T>(instance:T) : T
+{
+    var fake:any = {};
+    fake.__injectNewGeneric = instance;
     return fake;
 }
 

@@ -1,8 +1,3 @@
-/*
-loadsvg
-analyserMessagesSuivis
-- trouver la page faire une fleche
-*/
 
 function get(url, callback)
 {

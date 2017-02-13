@@ -1,6 +1,6 @@
-import { bind, inject } from '../bacasable/injection';
-import { ExecutionRequeteServeur } from '../bacasable/executionRequeteServeur';
-import { IAuthentificationEmailMotDePasse } from '../bacasable/authentification';
+import { bind, inject } from '../../bacasable/bacasable/injection';
+import { ExecutionRequeteServeur } from '../../bacasable/bacasable/executionRequeteServeur';
+import { IAuthentificationEmailMotDePasse } from '../../bacasable/bacasable/authentification';
 import { Authentification, AuthentificationIn, AuthentificationOut } from '../api/authentification';
 
 export class AuthentificationImpl extends Authentification

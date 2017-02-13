@@ -1,6 +1,6 @@
-import { inject } from '../bacasable/injection';
-import { ApplicationClient } from '../bacasable/applicationClient';
-import { ajouterRoute } from '../bacasable/routage';
+import { inject } from '../../bacasable/bacasable/injection';
+import { ApplicationClient } from '../../bacasable/bacasable/applicationClient';
+import { ajouterRoute } from '../../bacasable/bacasable/routage';
 import { Contacter, ContacterIn } from '../api/contacter';
 
 export class PageContact

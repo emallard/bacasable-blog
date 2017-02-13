@@ -8,7 +8,7 @@
             "name": "Launch Test",
             "type": "node2",
             "request": "launch",
-            "program": "${workspaceRoot}/src/testrunner/runner.ts",
+            "program": "${workspaceRoot}/bacasable/testrunner/runner.ts",
             "cwd": "${workspaceRoot}",
             "outFiles": ["${workspaceRoot}/build/**/*.js"],
             "sourceMaps": true
@@ -17,7 +17,7 @@
             "name": "Launch Test Injection",
             "type": "node2",
             "request": "launch",
-            "program": "${workspaceRoot}/src/testrunner/test_injection.ts",
+            "program": "${workspaceRoot}/bacasable/testrunner/test_injection.ts",
             "cwd": "${workspaceRoot}",
             "outFiles": ["${workspaceRoot}/build/**/*.js"],
             "sourceMaps": true

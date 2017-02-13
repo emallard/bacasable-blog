@@ -1,7 +1,7 @@
-import { inject, injectFunc } from '../bacasable/injection';
-import { ApplicationClient } from '../bacasable/applicationClient';
+import { inject, injectFunc } from '../../bacasable/bacasable/injection';
+import { ApplicationClient } from '../../bacasable/bacasable/applicationClient';
 import { PageModifierArticle } from './pageModifierArticle';
-import { ajouterRoute, Lien, Redirection } from '../bacasable/routage';
+import { ajouterRoute, Lien, Redirection } from '../../bacasable/bacasable/routage';
 import { AjouterArticle, Article, ObtenirTousLesArticles } from '../api/articles';
 
 
@@ -47,7 +47,7 @@ export class ComposantArticle
 {
     app = inject(ApplicationClient);
 
-    article: Article;;
+    article: Article;
     lien : Lien<PageModifierArticle>;
     setArticle(article:Article)
     {

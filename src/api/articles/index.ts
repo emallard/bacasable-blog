@@ -1,5 +1,5 @@
-import { WebService } from '../../bacasable/webservice';
-import { ajouterRouteApi } from '../../bacasable/routage';
+import { WebService } from '../../../bacasable/bacasable/webservice';
+import { ajouterRouteApi } from '../../../bacasable/bacasable/routage';
 
 
 export class Article

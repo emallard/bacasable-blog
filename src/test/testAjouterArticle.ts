@@ -1,4 +1,4 @@
-import { ajouterTest } from '../testrunner/runner';
+import { ajouterTest } from '../../bacasable/testrunner/runner';
 import { PageVoirArticle } from '../client/pageVoirArticle';
 import { PageAccueil } from '../client/pageAccueil';
 import {TestBase} from './testBase';

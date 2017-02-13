@@ -1,5 +1,5 @@
-import { bind } from '../../bacasable/injection';
-import { ExecutionRequeteServeur } from '../../bacasable/executionRequeteServeur';
+import { bind } from '../../../bacasable/bacasable/injection';
+import { ExecutionRequeteServeur } from '../../../bacasable/bacasable/executionRequeteServeur';
 import {
     AjouterArticle,
     Article,
@@ -10,7 +10,7 @@ import {
     Id,
     ObtenirArticle
 } from '../../api/articles';
-import { LokiPersistance } from '../../bacasable/persistanceLoki';
+import { LokiPersistance } from '../../../bacasable/bacasable/persistanceLoki';
 
 export class DerniersArticlesImpl extends DerniersArticles
 {

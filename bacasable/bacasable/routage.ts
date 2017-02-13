@@ -1,23 +1,43 @@
 import { inject, Injection } from './injection';
 import * as pathToRegexp from 'path-to-regexp';
-
+import {ApplicationClient} from './applicationClient'
 export interface IRoutable<U>
 {
     construire(query:U);
 }
 
 
+
+
 export class Lien<T>
 {
     url:string;
-    type:new()=>T;
+    type:{new():T};
+
+    app = inject(ApplicationClient);
+    afterInject()
+    {
+        this.url = this.app.LienVers(this.type).url;
+    }
 }
 
+export function lien<T>(t:{new():T}) : Lien<T>
+{
+    var lien = new Lien<T>();
+    lien.type = t;
+    return lien;
+}
 
 export class Redirection<T>
 {
     url:string;
     type:new()=>T;
+
+    app = inject(ApplicationClient);
+    afterInject()
+    {
+        this.url = this.app.LienVers(this.type).url;
+    }
 }
 
 /*
