@@ -2,27 +2,27 @@
 export class IAuthentificationEmailMotDePasse
 {
 
-    sInscrire(email:string, motDePasse:string) 
+    async sInscrire(email:string, motDePasse:string) : Promise<string>
     {
         throw "Non implémenté";
     }
 
-    sAuthentifier(email:string, motDePasse:string)
+    async sAuthentifier(email:string, motDePasse:string)
     {
         throw "Non implémenté";
     }
 
-    seDeconnecter()
+    async seDeconnecter()
     {
         throw "Non implémenté";
     }
 
-    estAuthentifié() : boolean
+    async estAuthentifié() : Promise<boolean>
     {
         throw "Non implémenté";
     }
 
-    idAuthentifié() : string 
+    async idAuthentifié() : Promise<string> 
     {
         throw "Non implémenté";
     }

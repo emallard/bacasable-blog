@@ -89,24 +89,26 @@ export class Injection
     bindings:Binding[] = [];
 
     scopes:InstancesParScope[];
-    configurationScopes : BindingScope[] = [];
+    //configurationScopes : BindingScope[] = [];
     
     singletonScope : BindingScope;
 
     constructor()
     {
         this.singletonScope = new BindingScope(Injection);
-        this.configurationScopes.push(this.singletonScope);
+        //this.configurationScopes.push(this.singletonScope);
         this['__injectScopes'] = [new RuntimeScope(Injection)];
         this.bind(Injection).toConstant(this);
     }
-
+/*
     addScope(bindingScope:BindingScope):BindingScope
     {
         this.configurationScopes.push(bindingScope);
         return bindingScope;
     }
+*/
 
+/*
     getScope(type:{new ():any}) : BindingScope
     {
         var found = this.configurationScopes.find(s => s.typeScope == type);
@@ -117,7 +119,7 @@ export class Injection
         }
         return found;
     }
-
+*/
     bind(typeInterface:{new ():any}) : Binding
     {
         var binding = new Binding(typeInterface);
@@ -163,6 +165,9 @@ export class Injection
     {
         this.copyRuntimeScopes(newInstance, runtimeScopes);
         this.injectProperties(newInstance, recursionLevel);
+        // afterInject
+        if (newInstance.afterInject != undefined)
+            newInstance.afterInject();
         return newInstance;
     }
 
@@ -206,7 +211,7 @@ export class Injection
         this.copyRuntimeScopes(newInstance, runtimeScopes);
 
         // create new scope if needed
-        var startANewScope = (null != this.configurationScopes.find(is => is.typeScope == typeInterface));
+        var startANewScope = (null != this.bindings.find(b => b.scoping.bindingScope.typeScope == typeInterface));
         if (startANewScope)
         {
             this.log('starting a new scope', recursionLevel);
@@ -217,6 +222,11 @@ export class Injection
             
         // properties
         this.injectProperties(newInstance, recursionLevel);
+
+        // afterInject
+        if (newInstance.afterInject != undefined)
+            newInstance.afterInject();
+
         return newInstance;
     }
 

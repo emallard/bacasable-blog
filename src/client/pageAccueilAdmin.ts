@@ -18,13 +18,14 @@ export class PageAccueilAdmin
     async construire()
     {
         var _articles = await this.app.AppelerWebService(ObtenirTousLesArticles, {});
-
+/*
         _articles.forEach(a => 
         {
             var composant = this.creerComposantArticle();
             composant.setArticle(a);
             this.articles.push(composant);
         });
+        */
     }
 
     async ajouterUnArticle() : Promise<Redirection<PageModifierArticle>>

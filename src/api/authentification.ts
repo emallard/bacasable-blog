@@ -16,3 +16,8 @@ export class Authentification extends WebService<AuthentificationIn, Authentific
 {
     static route = ajouterRouteApi('/api/authentification', Authentification);
 }
+
+export class Inscription extends WebService<AuthentificationIn, AuthentificationOut>
+{
+    static route = ajouterRouteApi('/api/inscription', Inscription);
+}

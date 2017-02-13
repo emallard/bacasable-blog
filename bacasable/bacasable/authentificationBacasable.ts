@@ -1,7 +1,14 @@
+import { inject } from './injection';
+import { IPersistance } from './persistance';
 import { IAuthentificationEmailMotDePasse } from './authentification';
 
 
-// A injecter comme singleton
+export class EmailMotDePasse
+{
+    email:string = null;
+    motDePasse:string = null;
+}
+
 export class AuthentificationEmailMotDePasseBacasable extends IAuthentificationEmailMotDePasse
 {
 
@@ -9,15 +16,30 @@ export class AuthentificationEmailMotDePasseBacasable extends IAuthentificationE
     id:string = null;
     email:string = null;
     motDePasse:string = null;
+/*
+    persistance = inject(IPersistance);
 
-    sInscrire(email:string, motDePasse:string) 
+    async sInscrire(email:string, motDePasse:string) 
+    {
+        var collection = this.persistance.collection(EmailMotDePasse);
+        return await collection.insertOne({email : email, motDePasse : motDePasse});
+    }
+
+    async sAuthentifier(email:string, motDePasse:string)
+    {
+        var collection = this.persistance.collection(EmailMotDePasse);
+        this.authentifié = null != await collection.findOne({email : email, motDePasse : motDePasse});
+    }
+*/
+    async sInscrire(email:string, motDePasse:string) : Promise<string>
     {
         this.email = email;
         this.motDePasse = motDePasse;
         this.id = '12345';
+        return this.id;
     }
 
-    sAuthentifier(email:string, motDePasse:string)
+    async sAuthentifier(email:string, motDePasse:string)
     {
         if (this.email == email && this.motDePasse == motDePasse)
         {
@@ -25,18 +47,18 @@ export class AuthentificationEmailMotDePasseBacasable extends IAuthentificationE
         }
     }
 
-    seDeconnecter()
+    async seDeconnecter()
     {
         this.authentifié = false;
         this.id = null;
     }
 
-    estAuthentifié() : boolean
+    async estAuthentifié() : Promise<boolean>
     {
         return this.authentifié;
     }
 
-    idAuthentifié() : string 
+    async idAuthentifié() : Promise<string> 
     {
         if (!this.authentifié)
             throw "Pas d'authentification";

@@ -23,6 +23,7 @@ function graphPushMessage(msgStr)
     if (msg.type == 'suivi')
     {
         msg.accum = accum;
+        testPageSuivi(msg);
         flecheSuivi(msg);
         //var url = msg.url;
         //addLi(msg.url + ':' + msg.anciennePage + ' -> ' + msg.nouvellePage);
@@ -40,14 +41,38 @@ function graphPushMessage(msgStr)
     */}
 }
 
+function testPageSuivi(msg)
+{
+    var tspan = trouverText(msg.nouvellePage);
+    console.log(msg.nouvellePage);
+    if (tspan != undefined)
+        return;
+    var svg = document.getElementsByTagName('svg')[0];
+    var g = svg.querySelectorAll("g")[0];
+
+    var allTexts = svg.querySelectorAll("text")
+    var maxY = 10;
+    for (var i=0; i<allTexts.length; ++i)
+    {
+        var x = parseFloat(allTexts[i].getAttribute('x'));
+        var y = parseFloat(allTexts[i].getAttribute('y'));
+        if (x<10)
+            maxY = Math.max(maxY, y);
+    }
+
+    var text = SVG.createText(1, maxY+40, msg.nouvellePage );//+ '  ' + msg.url);
+    g.appendChild(text);
+}
+
 function flecheSuivi(msg)
 {
     if (msg.anciennePage == undefined)
         return;
 
     var svg = document.getElementsByTagName('svg')[0];
-    var de = trouverTSpan(msg.anciennePage);
-    var a = trouverTSpan(msg.nouvellePage);
+    var de = trouverText(msg.anciennePage);
+    var a = trouverText(msg.nouvellePage);
+    
     a.style.fill = 'red';
     
     //console.log(a.getCTM());
@@ -79,6 +104,19 @@ function flecheSuivi(msg)
 function trouverTSpan(nom)
 {
     var liste = document.getElementsByTagName('tspan');
+    for (var i=0; i<liste.length; ++i)
+    {
+        if (liste[i].textContent == nom || 
+            ('Page'+liste[i].textContent == nom))
+            {
+                return liste[i];
+            }
+    }
+}
+
+function trouverText(nom)
+{
+    var liste = document.getElementsByTagName('text');
     for (var i=0; i<liste.length; ++i)
     {
         if (liste[i].textContent == nom || 

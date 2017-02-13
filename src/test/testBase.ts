@@ -1,3 +1,7 @@
+import { LokiPersistance } from '../../bacasable/bacasable/persistanceLoki';
+import { IPersistance } from '../../bacasable/bacasable/persistance';
+import { AuthentificationEmailMotDePasseBacasable } from '../../bacasable/bacasable/authentificationBacasable';
+import { IAuthentificationEmailMotDePasse } from '../../bacasable/bacasable/authentification';
 import { RouteurClient, RouteurServeur } from '../../bacasable/bacasable/routage';
 import { Injection } from '../../bacasable/bacasable/injection';
 import { ExecutionRequeteServeur } from '../../bacasable/bacasable/executionRequeteServeur';
@@ -43,6 +47,10 @@ export class TestBase
         injection.bind(InjectionServeur).toSelf().inSingletonScope();
         injection.get(InjectionClient).configurer(injection);
         injection.get(InjectionServeur).configurer(injection);
+
+        // persistance et authentification
+        injection.bind(IAuthentificationEmailMotDePasse).to(AuthentificationEmailMotDePasseBacasable).inSingletonScope();//.inTypeScope(ExecutionRequeteServeur);
+        injection.bind(IPersistance).to(LokiPersistance).inSingletonScope();//.inTypeScope(ExecutionRequeteServeur);
 
         this.bacasable = injection.get(BacASable);
         await this.bacasable.initialiser();

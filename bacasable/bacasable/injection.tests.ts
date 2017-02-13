@@ -61,15 +61,12 @@ export class TestInjection
     {
         var injection = new Injection();
 
-        var requeteScope = new BindingScope(RequeteServeur);
-        injection.addScope(requeteScope);
-
-        injection.bind(RequeteServeur).toSelf().in(requeteScope);
-        injection.bind(WebService1).toSelf().in(requeteScope);
-        injection.bind(WebService2).toSelf().in(requeteScope);
-        injection.bind(Authentification).toSelf().in(requeteScope);
-        injection.bind(Session).toSelf().in(requeteScope);
-        injection.bind(Cookies).toSelf().in(requeteScope);
+        injection.bind(RequeteServeur).toSelf().inTypeScope(RequeteServeur);
+        injection.bind(WebService1).toSelf().inTypeScope(RequeteServeur);
+        injection.bind(WebService2).toSelf().inTypeScope(RequeteServeur);
+        injection.bind(Authentification).toSelf().inTypeScope(RequeteServeur);
+        injection.bind(Session).toSelf().inTypeScope(RequeteServeur);
+        injection.bind(Cookies).toSelf().inTypeScope(RequeteServeur);
 
         injection.bind(Persistance).toSelf().inSingletonScope();
         injection.bind(Logger).toSelf().inSingletonScope();

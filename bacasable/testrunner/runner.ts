@@ -119,16 +119,24 @@ app.get('/', function(req, res){
     var file = path.join(__dirname, "..", "..", "..", "bacasable", "testrunner", "public", "index.html")
     res.sendFile(file);
 });
-/*
+
 app.get('/schema.svg', function(req, res){
     var file = path.join(__dirname, "..", "..", "..", "src", "test", "schema.svg")
     res.sendFile(file);
-});*/
+});
+
+app.post('/schema.svg', function(req, res){
+    var file = path.join(__dirname, "..", "..", "..", "src", "test", "schema.svg");
+    console.log(req.body);
+    //fs.writeFileSync(file, req.body);
+    res.end();
+});
 
 // Lancer un test
 app.post('/api/lancer', async function(req, res) {
     console.log(req.body);
     await lancerTest(trouverTest(req.body.nom));
+    res.end();
 });
 
 // Liste des tests

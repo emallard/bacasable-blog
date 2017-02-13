@@ -27,12 +27,12 @@ export class Id
 
 export class DerniersArticles extends WebService<DerniersArticlesIn, DerniersArticlesOut>
 {
-    static route = ajouterRouteApi('/api/derniers', DerniersArticles);
+    static route = ajouterRouteApi('/api/article/derniers', DerniersArticles);
 }
 
 export class ObtenirTousLesArticles extends WebService<any, Article[]>
 {
-    static route = ajouterRouteApi('/api/tous', ObtenirTousLesArticles);
+    static route = ajouterRouteApi('/api/article/tous', ObtenirTousLesArticles);
 }
 
 export class AjouterArticle extends WebService<Article, Id>

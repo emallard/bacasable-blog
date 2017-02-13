@@ -43,7 +43,7 @@ export class LokiCollection_<T> implements ICollection<T>
 
     async find(query:any) : Promise<T[]>
     {
-        return null;//this.col.find(query);
+        return this.col.chain().find(query).data();
     }
 
     async insertOne(t:T) : Promise<string>
